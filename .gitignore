@@ -1,0 +1,6 @@
+bun.lockb
+dist/
+node_modules/
+prisma/__generated__
+.env
+package-lock.json
