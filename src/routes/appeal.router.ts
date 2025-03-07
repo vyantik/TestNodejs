@@ -7,14 +7,16 @@ import {
 	rejectAppeal,
 	takeAppeal,
 } from "../controllers/appeal.controller";
+import { body, param } from "express-validator";
+import { appealAnswerDto, appealDto } from "../middlewares/appeal.dto";
 
 const appealRouter = Router();
 
 appealRouter.get("/", getAllAppeals);
-appealRouter.post("/", createAppeal);
+appealRouter.post("/", appealDto, createAppeal);
 appealRouter.patch("/bulk/close", closePendingAppeals);
-appealRouter.post("/:id/reject", rejectAppeal);
-appealRouter.post("/:id/close", closeAppeal);
+appealRouter.post("/:id/reject", appealAnswerDto, rejectAppeal);
+appealRouter.post("/:id/close", appealAnswerDto, closeAppeal);
 appealRouter.post("/:id/take", takeAppeal);
 
 export default appealRouter;

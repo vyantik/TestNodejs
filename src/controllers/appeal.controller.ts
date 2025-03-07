@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { AppealStatus, PrismaClient } from "../../prisma/__generated__";
+import { validationResult } from "express-validator";
 
 const appealClient = new PrismaClient().appeal;
 
@@ -88,26 +89,13 @@ export const getAllAppeals = async (req: Request, res: Response) => {
 };
 
 export const createAppeal = async (req: Request, res: Response) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		res.status(400).json({ errors: errors.array() });
+		return;
+	}
+
 	try {
-		if (!req.body) {
-			res.status(400).json({ message: "Данные не предоставлены" });
-			return;
-		}
-
-		if (!req.body.title) {
-			res.status(400).json({
-				message: "Название обращения не предоставлено",
-			});
-			return;
-		}
-
-		if (!req.body.description) {
-			res.status(400).json({
-				message: "Описание обращения не предоставлено",
-			});
-			return;
-		}
-
 		const appeal = await appealClient.create({
 			data: {
 				title: req.body.title,
@@ -122,6 +110,12 @@ export const createAppeal = async (req: Request, res: Response) => {
 };
 
 export const takeAppeal = async (req: Request, res: Response) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		res.status(400).json({ errors: errors.array() });
+		return;
+	}
+
 	try {
 		const appealId = req.params.id;
 
@@ -158,6 +152,12 @@ export const takeAppeal = async (req: Request, res: Response) => {
 };
 
 export const closeAppeal = async (req: Request, res: Response) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		res.status(400).json({ errors: errors.array() });
+		return;
+	}
+
 	try {
 		const appealId = req.params.id;
 
@@ -209,6 +209,12 @@ export const closeAppeal = async (req: Request, res: Response) => {
 };
 
 export const rejectAppeal = async (req: Request, res: Response) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		res.status(400).json({ errors: errors.array() });
+		return;
+	}
+
 	try {
 		const appealId = req.params.id;
 
@@ -260,6 +266,12 @@ export const rejectAppeal = async (req: Request, res: Response) => {
 };
 
 export const closePendingAppeals = async (req: Request, res: Response) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		res.status(400).json({ errors: errors.array() });
+		return;
+	}
+
 	try {
 		await appealClient.updateMany({
 			where: { status: AppealStatus.PENDING },
