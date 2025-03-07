@@ -7,7 +7,6 @@ import {
 	rejectAppeal,
 	takeAppeal,
 } from "../controllers/appeal.controller";
-import { body, param } from "express-validator";
 import { appealAnswerDto, appealDto } from "../middlewares/appeal.dto";
 
 const appealRouter = Router();
